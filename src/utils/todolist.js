@@ -1,7 +1,5 @@
 import { computed, ref, watchEffect, defineEmits } from 'vue'
 
-let inputEvent = defineEmits('update-tip')
-
 export function useTodos() {
     let item = ref({ title: "", done: false })
     let todos = useStorage('todos', [])
@@ -33,6 +31,17 @@ export function useTodos() {
         todos.value = todos.value.filter((v) => !v.done)
     }
 
+    function remove(event, index) {
+
+// JavaScript中的splice主要用来对js中的数组进行操作，包括删除，添加，替换等。
+
+// 1.删除-用于删除元素，两个参数，第一个参数（要删除第一项的位置），第二个参数（要删除的项数） 
+// 2.插入-向数组指定位置插入任意项元素。三个参数，第一个参数（插入位置），第二个参数（0），第三个参数（插入的项） 
+// 3.替换-向数组指定位置插入任意项元素，同时删除任意数量的项，三个参数。第一个参数（起始位置），第二个参数（删除的项数），第三个参数（插入任意数量的项）
+
+        todos.value.splice(index, 1)
+    }
+
     let active = computed(
         () => {
             return todos.value.filter((v) => !v.done).length;
@@ -56,7 +65,7 @@ export function useTodos() {
         }
     )
 
-    return { item, todos, showTip, addTodo, clear, active, all, allDone }
+    return { item, todos, showTip, addTodo, clear, remove, active, all, allDone }
 
 }
 

@@ -1,4 +1,7 @@
 <template>
+
+    <Dustbin :value="animate.el"  :show="animate.show"/>
+
     <div>
 
         <transition name="modal">
@@ -12,9 +15,10 @@
         <button v-if="active < all" @click="clear">清理</button>
         <ul v-if="todos.length">
             <transition-group name="flip-list" tag="ul">
-                <li v-for="item in todos">
+                <li v-for="(item, index) in todos" :key="item.title">
                     <input type="checkbox" v-model="item.done" />
                     <span :class="{ done: item.done }">{{ item.title }}</span>
+                    <span class="remove-btn" @click="removeTodo($event, index)">❌</span>
                 </li>
             </transition-group>
         </ul>
@@ -28,9 +32,25 @@
 
 <script setup>
 
-import { useTodos } from '../utils/todolist'
 
-let { item, todos, showTip, addTodo, clear, active, all, allDone } = useTodos()
+import { useTodos } from '../utils/todolist'
+import Dustbin from '../components/Dustbin.vue';
+import { reactive } from 'vue'
+
+// 这个里面刚好可以写一个从父组件到子组件的数据传递
+
+let animate = reactive({
+    el: null,
+    show:false
+})
+
+function removeTodo(event, index) {
+    animate.el = event.target
+    animate.show = true
+    remove(event, index)
+}
+
+let { item, todos, showTip, addTodo, clear, remove, active, all, allDone } = useTodos()
 
 
 

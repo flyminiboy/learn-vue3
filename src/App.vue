@@ -10,7 +10,13 @@
     <router-link to="/about">关于</router-link> | 
     <router-link to="/proxy">代理</router-link>
   </div>
+  
   <router-view></router-view>
+<!-- <router-view v-slot="{ Component }">
+  <transition  name="route" mode="out-in">
+    <component :is="Component" />
+  </transition>
+</router-view> -->
 
 </template>
 
